@@ -83,7 +83,7 @@ Example:
 	ls -la /tmp/blahblah.txt 
 	-rw-r--r-- 1 postgres postgres 47 janv. 22 19:16 /tmp/blahblah.txt
 
-  -- Create a table taht will use external files
+  -- Create a table that will use external files
   CREATE TABLE efile_test ( id smallint primary key, the_file efile);
   -- Insert a row to access the external file called blahblah.txt
   INSERT INTO efile_test VALUES (1,('temporary','blahblah.txt'));
