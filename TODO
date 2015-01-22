@@ -1,0 +1,5 @@
+This is a list of things that should be done.
+Help is welcome!
+
+- Support to remove external files
+	CREATE OR REPLACE FUNCTION removeEfile(e_file efile) RETURNS void ...

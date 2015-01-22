@@ -1,0 +1,6 @@
+comment = 'functions to read or write files from postgresql server filesystems'
+default_version = '0.2'
+encoding = 'utf8'
+relocatable = false
+superuser = true
+schema = external_file
