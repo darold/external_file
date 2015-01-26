@@ -108,19 +108,19 @@ Example:
 4. Function reference
 =====================
 
-readEfile(e_file in efile) returns bytea
+* **readEfile(e_file in efile) returns bytea**
   copy the external file into a bytea.
   Error will be generated if something wrong.
 
-writeEfile(buffer in bytea, e_file in efile) returns void
+* **writeEfile(buffer in bytea, e_file in efile) returns void**
   copy a bytea into a external file.
   Error will be generated if something wrong.
 
-copyEfile(src in efile, dest in efile) returns void
+* **copyEfile(src in efile, dest in efile) returns void**
   duplicate file defined by src into file dest
   Error will be generated if something wrong.
 
-getEfilePath(e_file efile, need_read in boolean, need_write in boolean) returns text
+* **getEfilePath(e_file efile, need_read in boolean, need_write in boolean) returns text**
   giving an efile and booleans, one for read and one for write need, return the
   full path for the file, otherwise an error is generated 
   useful to check if session user has access to this external file
