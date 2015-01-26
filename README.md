@@ -20,12 +20,12 @@ installed with packages, install the development package).
 Get/Unpack the source code in a fresh directory Then the software installation
 should be as simple as
 
-  $ make (In these version do nothing)
-  $ make install
+	$ make (In these version do nothing)
+	$ make install
 
 To install the extension in a database, connect as superuser and
 
-  CREATE EXTENSION external_file;
+	CREATE EXTENSION external_file;
 
 By default all objects of the extension are created in the external_file schema.
 If you want to change the schema name you must edit the external_file.control
@@ -58,7 +58,7 @@ change this but it's NOT recommended.
 
 Example:
 
-  INSERT INTO directories(directory_name,directory_path) VALUES ('temporary','/tmp/');
+	INSERT INTO directories(directory_name,directory_path) VALUES ('temporary','/tmp/');
 
 ATTENTION:
  * the path must use the terminal separator!
@@ -71,39 +71,39 @@ table.
 
 Example:
 
-  INSERT INTO directory_roles(directory_name,directory_role,directory_read,directory_write) VALUES ('temporary','a_role',true,false);
+	INSERT INTO directory_roles(directory_name,directory_role,directory_read,directory_write) VALUES ('temporary','a_role',true,false);
 
 Now standard user can use external files.
 
 Example:
 
-  -- Store a new external file blahblah.txt into the directory
-  SELECT writeEfile('\x48656c6c6f2c0a0a596f75206172652072656164696e67206120746578742066696c652e0a0a526567617264732c0a', ('temporary', 'blahblah.txt'));
+	-- Store a new external file blahblah.txt into the directory
+	SELECT writeEfile('\x48656c6c6f2c0a0a596f75206172652072656164696e67206120746578742066696c652e0a0a526567617264732c0a', ('temporary', 'blahblah.txt'));
 
 	ls -la /tmp/blahblah.txt 
 	-rw-r--r-- 1 postgres postgres 47 janv. 22 19:16 /tmp/blahblah.txt
 
-  -- Create a table that will use external files
-  CREATE TABLE efile_test ( id smallint primary key, the_file efile);
-  -- Insert a row to access the external file called blahblah.txt
-  INSERT INTO efile_test VALUES (1,('temporary','blahblah.txt'));
-  -- Assuming user has right to read, and the file exists
-  SELECT id, readefile(the_file) FROM efile_test;
-  -- Make a physical copy of the external file assuming user has right to read AND write
-  SELECT copyefile(('temporary','blahblah.txt'),('temporary','copy_blahblah.txt'));
-  INSERT INTO efile_test VALUES (2,('temporary','copy_blahblah.txt'));
+	-- Create a table that will use external files
+	CREATE TABLE efile_test ( id smallint primary key, the_file efile);
+	-- Insert a row to access the external file called blahblah.txt
+	INSERT INTO efile_test VALUES (1,('temporary','blahblah.txt'));
+	-- Assuming user has right to read, and the file exists
+	SELECT id, readefile(the_file) FROM efile_test;
+	-- Make a physical copy of the external file assuming user has right to read AND write
+	SELECT copyefile(('temporary','blahblah.txt'),('temporary','copy_blahblah.txt'));
+	INSERT INTO efile_test VALUES (2,('temporary','copy_blahblah.txt'));
 
 	ls /tmp/*blahblah.txt
 	-rw-r--r-- 1 postgres postgres 47 janv. 22 19:16 /tmp/blahblah.txt
 	-rw-r--r-- 1 postgres postgres 47 janv. 22 19:24 /tmp/copy_blahblah.txt
 
-  file=# SELECT id, readefile(the_file) FROM efile_test;
-   id |                                            readefile                                             
-  ----+--------------------------------------------------------------------------------------------------
-    1 | \x48656c6c6f2c0a0a596f75206172652072656164696e67206120746578742066696c652e0a0a526567617264732c0a
-    2 | \x48656c6c6f2c0a0a596f75206172652072656164696e67206120746578742066696c652e0a0a526567617264732c0a
-  (2 lines)
- 
+	file=# SELECT id, readefile(the_file) FROM efile_test;
+	 id |                                            readefile                                             
+	----+--------------------------------------------------------------------------------------------------
+	  1 | \x48656c6c6f2c0a0a596f75206172652072656164696e67206120746578742066696c652e0a0a526567617264732c0a
+	  2 | \x48656c6c6f2c0a0a596f75206172652072656164696e67206120746578742066696c652e0a0a526567617264732c0a
+	(2 lines)
+
 
 4. Function reference
 =====================
