@@ -137,8 +137,12 @@ Example:
 
 5. License
 ==========
-  Author Dominique Legendre
-  Copyright (c) 2012-2015 Brgm - All rights reserved.
+Author Dominique Legendre
+
+Copyright (c) 2012-2015 Brgm - All rights reserved.
+
+See LICENCE file.
+
 
 6. Acknowledgements
 ===================
