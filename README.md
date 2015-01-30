@@ -4,6 +4,12 @@ External file access extension
 Allow access to "external files" from PostgreSQL server file systems.
 This extension is only a "secure version" of the server side lo_* functions.
 
+This extension adds the same functionalities given by the Oracle's BFILE data
+type that stores unstructured binary data in flat files outside the database.
+A BFILE column stores a file locator that points to an external file containing
+the data: (DIRECTORY, FILENAME). Here the data type is called EFILE.
+
+
 1. Installation requirements
 ============================
 PostgreSQL 9.1 or better are required.
@@ -129,4 +135,8 @@ getEfilePath(e_file efile, need_read in boolean, need_write in boolean) returns 
 ==========
   Author Dominique Legendre
   Copyright (c) 2012-2015 Brgm - All rights reserved.
+
+6. Acknowledgements
+===================
+Great thanks to Gilles Darold for code review, security patches and project hosting.
 
