@@ -1,5 +1,5 @@
 External file access extension
-==============================
+------------------------------
 
 Allow access to "external files" from PostgreSQL server file systems.
 This extension is only a "secure version" of the server side lo_* functions.
@@ -11,12 +11,15 @@ the data: (DIRECTORY, FILENAME). Here the data type is called EFILE.
 
 
 1. Installation requirements
-============================
+----------------------------
+
+
 PostgreSQL 9.1 or better are required.
 User with PostgreSQL superuser role for creating extension.
 
 2. Installation
-===============
+---------------
+
 external_file has been written as a PostgreSQL extension and uses the Extension
 Building Infrastructure "PGXS".
 
@@ -53,7 +56,8 @@ Please refer to the PostgreSQL documentation for more information.
 
 
 3. Usage
-========
+--------
+
 External file are accessed using two values, an alias for the path of the
 directory where the file is, and the file name.
 
@@ -112,7 +116,7 @@ Example:
 
 
 4. Function reference
-=====================
+---------------------
 
 * **readEfile(e_file in efile) returns bytea**
 
@@ -136,7 +140,8 @@ Example:
   useful to check if session user has access to this external file
 
 5. License
-==========
+----------
+
 Author Dominique Legendre
 
 Copyright (c) 2012-2015 Brgm - All rights reserved.
@@ -145,6 +150,7 @@ See LICENCE file.
 
 
 6. Acknowledgements
-===================
+-------------------
+
 Great thanks to Gilles Darold for code review, security patches and project hosting.
 
