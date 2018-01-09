@@ -1,6 +1,6 @@
 -- External files extension for PostgreSQL
 -- Author Dominique Legendre
--- Copyright (c) 2012-2015 Brgm - All rights reserved.
+-- Copyright (c) 2012-2018 Brgm - All rights reserved.
 
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
 \echo Use "CREATE EXTENSION external_file" to load this file. \quit
