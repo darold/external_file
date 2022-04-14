@@ -2,17 +2,17 @@ External file access extension
 ==============================
 
 Allow access to "external files" from PostgreSQL server file systems.
-This extension is only a "secure version" of the server side lo_* functions.
 
 This extension adds the same functionalities given by the Oracle's BFILE data
 type that stores unstructured binary data in flat files outside the database.
 A BFILE column stores a file locator that points to an external file containing
 the data: (DIRECTORY, FILENAME). Here the data type is called EFILE.
 
+The extension access to external files using secure call to the server side `lo_*`
+functions and not by directly reading/writing to files.
 
 Installation requirements
 -------------------------
-
 
 PostgreSQL 9.1 or better are required.
 User with PostgreSQL superuser role for creating extension.
@@ -36,18 +36,18 @@ To install the extension in a database, connect as superuser and
 
 	CREATE EXTENSION external_file;
 
-By default all objects of the extension are created in the external_file schema.
-If you want to change the schema name you must edit the external_file.control
+By default all objects of the extension are created in the `external_file` schema.
+If you want to change the schema name you must edit the `external_file.control`
 file. Note that this schema must not be writable by normal user to not allow
 bypassing of the search path set with the security definer.
 
 
 When using schema with extension, it's better to include this schema in the
-default search_path. For example:
+default search path. For example:
 
 	ALTER DATABASE <mydb> SET search_path="$user",public,external_file;
 
-Also you can restrict USAGE grant on external_file schema to specific user and
+Also you can restrict USAGE grant on `external_file` schema to specific user and
 change the default search path at user level too.
 
 	GRANT USAGE ON SCHEMA external_file TO <username>;
@@ -71,9 +71,10 @@ Example:
 	INSERT INTO directories(directory_name,directory_path) VALUES ('temporary','/tmp/');
 
 ATTENTION:
- * the path must use the terminal separator!
+ * the directory path must use the terminal file system separator!
  * the system user running PostgreSQL server (generally postgres) must have the
-   system rights to read and/or write files
+   system rights to read and/or write files. See `pg_read_server_files` and
+   `pg_write_server_files` privileges introduced in PostgreSQL 11.
  * the filename don't include any / or \ character for security reason
 
 Second, rights for user and/or role are defined using the "directory_access"
@@ -101,7 +102,9 @@ Example:
 	SELECT id, readefile(the_file) FROM efile_test;
 	-- Make a physical copy of the external file assuming user has right to read AND write
 	SELECT copyefile(('temporary','blahblah.txt'),('temporary','copy_blahblah.txt'));
-	INSERT INTO efile_test VALUES (2,('temporary','copy_blahblah.txt'));
+	INSERT INTO efile_test VALUES (2, ('temporary','copy_blahblah.txt'):::efile);
+	-- or the equivalent using efilename()
+	INSERT INTO efile_test VALUES (3, efilename('temporary','copy_blahblah.txt'));
 
 	ls /tmp/*blahblah.txt
 	-rw-r--r-- 1 postgres postgres 47 janv. 22 19:16 /tmp/blahblah.txt
@@ -117,6 +120,12 @@ Example:
 
 Function reference
 ------------------
+
+* **efilename(directory in name, filename in varchar(256)) returns efile**
+
+  Returns an EFILE data type that is referencing the external file on the server filesystem.
+  Returns NULL on null imput.
+
 
 * **readEfile(e_file in efile) returns bytea**
 
@@ -139,18 +148,18 @@ Function reference
   full path for the file, otherwise an error is generated 
   useful to check if session user has access to this external file
 
+Authors
+-------
+
+* Dominique Legendre
+* Gilles Darold
+
 License
 -------
 
-Author Dominique Legendre
+external_file is free software distributed under the PostgreSQL Licence.
 
-Copyright (c) 2012-2018 Brgm - All rights reserved.
+* Copyright (c) 2012-2018 Brgm - All rights reserved.
+* Copyright (c) 2022 MigOps Inc - All rights reserved.
 
-See LICENCE file.
-
-
-Acknowledgements
-----------------
-
-Great thanks to Gilles Darold for code review, security patches and project hosting.
-
+Se1e LICENSE file.

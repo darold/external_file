@@ -1,10 +1,5 @@
--- External files extension for PostgreSQL
--- Author Dominique Legendre
--- Copyright (c) 2012-2018 Brgm - All rights reserved.
-
 -- complain if script is sourced in psql, rather than via CREATE EXTENSION
 \echo Use "CREATE EXTENSION external_file" to load this file. \quit
-
 
 CREATE TABLE directories (
 	directory_name name NOT NULL PRIMARY KEY,
@@ -71,8 +66,8 @@ BEGIN
   END LOOP;
   IF (need_read AND NOT read_enable) OR (need_write AND NOT write_enable) THEN
     RAISE EXCEPTION 'Missing right for this directory: %' ,e_file.directory;
-  END IF;  
-  p_path := p_path|| e_file.filename;
+  END IF;
+  p_path := p_path || e_file.filename;
   RETURN p_path;
 END;
 $$
@@ -149,4 +144,9 @@ CREATE TRIGGER trg_efile_check_role
     FOR EACH ROW
     EXECUTE PROCEDURE efile_check_role();
 
+
+-- Function used to replace Oracle BFILENAME that returns efile
+CREATE OR REPLACE FUNCTION efilename(directory name, filename varchar(256)) RETURNS efile
+AS 'SELECT ($1, $2)::efile;'
+LANGUAGE SQL STRICT;
 
