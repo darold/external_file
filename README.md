@@ -162,4 +162,4 @@ external_file is free software distributed under the PostgreSQL Licence.
 * Copyright (c) 2012-2018 Brgm - All rights reserved.
 * Copyright (c) 2022 MigOps Inc - All rights reserved.
 
-Se1e LICENSE file.
+See LICENSE file.

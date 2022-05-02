@@ -8,7 +8,7 @@ PG_CONFIG = pg_config
 PG91 = $(shell $(PG_CONFIG) --version | egrep " 8\.| 9\.0" > /dev/null && echo no || echo yes)
 
 ifeq ($(PG91),yes)
-DATA = $(wildcard updates/*--*.sql) sql/$(EXTENSION)--$(EXTVERSION).sql
+DATA = $(wildcard updates/*--*.sql) $(EXTENSION)--$(EXTVERSION).sql
 DOCS = README.external_file
 SCRIPTS =
 MODULES =
