@@ -1,3 +1,13 @@
+Version 1.1, released 2022-12-26
+
+  - Add the efilename() function as equivalent to the Oracle BFILENAME()
+    function
+  - Add regression tests, must be run as postgres user.
+  - Improve Makefile and detect minimum version of PostgreSQL requirement.
+  - Update Copyright and authors list.
+  - Fix make install error about file README.external_file. Thanks to
+    xinferum for the patch.
+
 Version 1.0, released 2018-01-09
   - initial release
 
