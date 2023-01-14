@@ -47,7 +47,7 @@ BEGIN
     RAISE EXCEPTION 'Filename is empty.';
   END IF;
   IF e_file.filename ~ '(\\|/)' THEN
-	RAISE EXCEPTION '/ or \ are forbiden inside filename';
+	RAISE EXCEPTION '/ or \ are forbidden inside filename';
   END IF;
   SELECT directory_path INTO p_path FROM directories WHERE directory_name= e_file.directory;
   IF NOT FOUND THEN
