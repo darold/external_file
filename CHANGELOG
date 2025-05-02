@@ -1,3 +1,12 @@
+Version 1.2, released 2025-05-02
+
+  - Change unauthorized characters to .. instead of / and \ to support
+    subfolders in filename. Thanks to duursma for the report.
+  - Create new version files.
+  - Performance improvement in readEfile() : single SQL statement instead
+    of iteration. Thanks to And-Jar for the patch.
+  - Fix some typo in documentation. Thanks to Gerardwx for the patch.
+
 Version 1.1, released 2022-12-26
 
   - Add the efilename() function as equivalent to the Oracle BFILENAME()
