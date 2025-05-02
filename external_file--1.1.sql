@@ -96,16 +96,9 @@ CREATE OR REPLACE FUNCTION readEfile(e_file efile, p_result OUT bytea)
 AS $$
 DECLARE
   l_oid oid;
-  r record;
 BEGIN
-  p_result := '';
   SELECT lo_import(getEfilePath(e_file,true,false)) INTO l_oid;
-  FOR r IN ( SELECT data 
-             FROM pg_largeobject 
-             WHERE loid = l_oid 
-             ORDER BY pageno ) LOOP
-    p_result = p_result || r.data;
-  END LOOP;
+  SELECT string_agg (data, NULL::bytea ORDER BY pageno) INTO p_result FROM pg_largeobject WHERE loid = l_oid;
   PERFORM lo_unlink(l_oid);
 END;
 $$
