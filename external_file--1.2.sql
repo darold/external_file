@@ -46,15 +46,16 @@ BEGIN
   IF coalesce(e_file.filename,'')='' THEN
     RAISE EXCEPTION 'Filename is empty.';
   END IF;
-  IF e_file.filename ~ '(\\|/)' THEN
-	RAISE EXCEPTION '/ or \ are forbidden inside filename';
+  IF e_file.filename ~ '\.\.' THEN
+	RAISE EXCEPTION 'double point (..) are forbidden inside filename';
   END IF;
   SELECT directory_path INTO p_path FROM directories WHERE directory_name= e_file.directory;
   IF NOT FOUND THEN
     RAISE EXCEPTION 'Directory % don''t exist.',e_file.directory;
   END IF;
   FOR r IN 
-    (SELECT directory_role,directory_read,directory_write FROM directory_roles WHERE directory_name= e_file.directory) LOOP
+    (SELECT directory_role,directory_read,directory_write FROM directory_roles WHERE directory_name= e_file.directory)
+  LOOP
 	IF pg_has_role(session_user,r.directory_role,'USAGE') THEN
 		IF r.directory_read THEN
 			read_enable := true;
@@ -96,16 +97,9 @@ CREATE OR REPLACE FUNCTION readEfile(e_file efile, p_result OUT bytea)
 AS $$
 DECLARE
   l_oid oid;
-  r record;
 BEGIN
-  p_result := '';
   SELECT lo_import(getEfilePath(e_file,true,false)) INTO l_oid;
-  FOR r IN ( SELECT data 
-             FROM pg_largeobject 
-             WHERE loid = l_oid 
-             ORDER BY pageno ) LOOP
-    p_result = p_result || r.data;
-  END LOOP;
+  SELECT string_agg (data, NULL::bytea ORDER BY pageno) INTO p_result FROM pg_largeobject WHERE loid = l_oid;
   PERFORM lo_unlink(l_oid);
 END;
 $$
